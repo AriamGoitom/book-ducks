@@ -46,3 +46,18 @@ const logout = () => {
     localStorage.clear();
     location.reload();
 };
+
+const checkLogin = () => {
+    let token = localStorage.getItem("token");
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if(token) {
+        userInfo.innerHTML = `Logged in as: ${user.username}`;
+        logoutBtn.style.display = "block";
+    } else {
+        userInfo.innerHTML = "Not logged in";
+        logoutBtn.style.display = "none";
+    }
+    
+    getBooks();
+};
