@@ -41,3 +41,8 @@ const register = async () => {
         alert("Wrong register");
     }
 };
+
+const logout = () => {
+    localStorage.clear();
+    location.reload();
+};
