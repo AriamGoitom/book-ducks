@@ -9,6 +9,35 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-    <h1>Book Ducks</h1>
+    <header>
+        <h1>Book Ducks</h1>
+        <div id="user-info"></div>
+        <button id="logoutBtn">Logout</button>
+    </header>
+
+    <section id="auth-section">
+        <div>
+            <h2>Login</h2>
+            <label for="identifier">Login</label>
+            <input type="text" id="identifier" placeholder="Username / Email">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password">
+            <button id="loginBtn">Login</button>
+        </div>
+        <div>
+            <h2>Register</h2>
+            <label for="registerUsername">Username</label>
+            <input type="text" id="registerUsername" placeholder="Username">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" placeholder="Email">
+            <button id="registerBtn">Register</button>
+        </div>
+    </section>
+    <hr>
+
+    <section>
+        <h2>Books</h2>
+        <div id="books-container"></div>
+    </section>
 </body>
 </html>
