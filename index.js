@@ -11,7 +11,7 @@ const booksContainer = document.querySelector("#books-container");
 
 const login = async () => {
     try {
-        const response = await axios.post("http://localhost:1337/api/auth/local", {
+        let response = await axios.post("http://localhost:1337/api/auth/local", {
             identifier: identifier.value,
             password: password.value
         });
@@ -22,5 +22,22 @@ const login = async () => {
     }
     catch(error){
         alert("Wrong login");
+    }
+};
+
+const register = async () => {
+    try {
+        let response = await axios.post("http://localhost:1337/api/auth/local/register", {
+            username: registerUsername.value,
+            email: registerEmail.value,
+            password: registerPassword.value
+        });
+        localStorage.setItem("token", response.data.jwt);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        checkLogin();
+    }
+    catch(error) {
+        alert("Wrong register");
     }
 };
