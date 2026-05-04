@@ -21,6 +21,7 @@ const login = async () => {
         checkLogin();
     }
     catch(error){
+        console.log(error.response?.data);
         alert("Wrong login");
     }
 };
@@ -38,6 +39,7 @@ const register = async () => {
         checkLogin();
     }
     catch(error) {
+        console.log(error.response.data);
         alert("Wrong register");
     }
 };
@@ -101,7 +103,9 @@ const saveBook = async (bookId) => {
         return;
     }
 
-    await axios.put("http://localhost:1337/users/${user.id}", {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    await axios.put(`http://localhost:1337/users/${user.id}`, {
         readingList: [bookId]
     }, {
         headers: {
