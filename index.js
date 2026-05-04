@@ -61,3 +61,20 @@ const checkLogin = () => {
     
     getBooks();
 };
+
+const getBooks = async () => {
+    let response = await axios.get("http://localhost:1337/api/books?populate=*");
+
+    booksContainer.innerHTML = "";
+
+    response.data.data.forEach(book => {
+        booksContainer.innerHTML += `
+        <div class="book-card">
+            <h3>${book.title}</h3>
+            <p>Author: ${book.author}</p>
+            <p>Pages: ${book.pages}</p>
+            <p>Release: ${book.releaseDate}</p>
+        </div>
+        `;
+    });
+};
