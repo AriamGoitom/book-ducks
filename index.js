@@ -78,3 +78,9 @@ const getBooks = async () => {
         `;
     });
 };
+
+loginBtn.addEventListener("click", login);
+registerBtn.addEventListener("click", register);
+logoutBtn.addEventListener("click", logout);
+
+checkLogin();
