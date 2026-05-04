@@ -70,8 +70,8 @@ const getBooks = async () => {
     booksContainer.innerHTML = "";
 
     response.data.data.forEach(book => {
-        const imageUrl = book.image?.url
-        ? "http://localhost:1337" + book.image.url
+        const imageUrl = book.image?.length > 0
+        ? "http://localhost:1337" + book.image[0].url
         : "";
 
         booksContainer.innerHTML += `
@@ -79,14 +79,16 @@ const getBooks = async () => {
             <h3>${book.title}</h3>
             <p>Author: ${book.author}</p>
             <p>Pages: ${book.pages}</p>
-            <p>Release: ${book.releaseDate}</p>
+            <p>Release: ${book.release_date}</p>
 
             <img src="${imageUrl}" width="100">
 
             <button onclick="saveBook(${book.id})">Save</button>
         </div>
         `;
+        console.log(book);
     });
+    
 };
 
 loginBtn.addEventListener("click", login);
