@@ -68,12 +68,20 @@ const getBooks = async () => {
     booksContainer.innerHTML = "";
 
     response.data.data.forEach(book => {
+        const imageUrl = book.image?.url
+        ? "http://localhost:1337" + book.image.url
+        : "";
+
         booksContainer.innerHTML += `
         <div class="book-card">
             <h3>${book.title}</h3>
             <p>Author: ${book.author}</p>
             <p>Pages: ${book.pages}</p>
             <p>Release: ${book.releaseDate}</p>
+
+            <img src="${imageUrl}" width="100">
+
+            <button onclick="saveBook(${book.id})">Save</button>
         </div>
         `;
     });
@@ -84,3 +92,21 @@ registerBtn.addEventListener("click", register);
 logoutBtn.addEventListener("click", logout);
 
 checkLogin();
+
+const saveBook = async (bookId) => {
+    const token = localStorage.getItem("token");
+
+    if(!token) {
+        alert("Log in first");
+        return;
+    }
+
+    await axios.put("http://localhost:1337/users/${user.id}", {
+        readingList: [bookId]
+    }, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    alert("Book saved");
+};
