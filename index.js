@@ -49,6 +49,8 @@ const logout = () => {
     location.reload();
 };
 
+const profileSection = document.querySelector("#profile-section");
+
 const checkLogin = () => {
     let token = localStorage.getItem("token");
     let user = JSON.parse(localStorage.getItem("user"));
@@ -56,9 +58,13 @@ const checkLogin = () => {
     if(token) {
         userInfo.innerHTML = `Logged in as: ${user.username}`;
         logoutBtn.style.display = "block";
+        profileSection.style.display = "block"; // show profileside when logged in
+
+        getReadingList();
     } else {
         userInfo.innerHTML = "Not logged in";
         logoutBtn.style.display = "none";
+        profileSection.style.display = "none";
     }
     
     getBooks();
