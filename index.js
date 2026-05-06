@@ -191,3 +191,26 @@ const renderReadingList = (list) => {
         `;
     });
 };
+
+const removeBook = async (bookId) => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    //remove from array
+    const updatedList = readingListData
+        .filter(book => book.id !== bookId)
+        .map(book => book.id);
+    
+    await axios.put(`http://localhost:1337/api/users/${user.id}`,
+        {
+            readingList: updatedList
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    getReadingList();
+};
