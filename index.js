@@ -8,6 +8,7 @@ const registerBtn = document.querySelector("#registerBtn");
 const logoutBtn = document.querySelector("#logoutBtn");
 const userInfo = document.querySelector("#user-info");
 const booksContainer = document.querySelector("#books-container");
+const body = document.querySelector("body");
 
 const login = async () => {
     try {
@@ -68,6 +69,7 @@ const checkLogin = () => {
     }
     
     getBooks();
+    getTheme();
 };
 
 const getBooks = async () => {
@@ -95,6 +97,17 @@ const getBooks = async () => {
         console.log(book);
     });
     
+};
+
+const getTheme = async () => {
+    
+    try {
+        const response = await axios.get("http://localhost:1337/api/theme");
+        const theme = response.data.data.themeName;
+        body.className = theme;
+    } catch(error) {
+        console.log(error);
+    }
 };
 
 let readingListData = [];
@@ -235,3 +248,4 @@ const saveBook = async (bookId) => {
         alert("Error saving book");
     }
 };
+
