@@ -223,3 +223,12 @@ const sortByTitle = () => {
 
     renderReadingList(sorted);
 };
+
+// Sort author
+const sortByAuthor = () => {
+    const sorted = [...readingListData].sort((a, b) =>
+        a.author.localeCompare(b.author)
+    );
+
+    renderReadingList(sorted);
+};
