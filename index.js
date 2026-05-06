@@ -97,61 +97,6 @@ const getBooks = async () => {
     
 };
 
-loginBtn.addEventListener("click", login);
-registerBtn.addEventListener("click", register);
-logoutBtn.addEventListener("click", logout);
-
-checkLogin();
-
-const saveBook = async (bookId) => {
-    const token = localStorage.getItem("token");
-
-    if(!token) {
-        alert("Log in first");
-        return;
-    }
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    try {
-        // 1. Get current user (with readingList)
-        const userResponse = await axios.get(
-            `http://localhost:1337/api/users/${user.id}?populate=readingList`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        );
-
-        const currentList = userResponse.data.readingList || [];
-
-        // 2. Get only the ID
-        const bookIds = currentList.map(book => book.id);
-
-        // 3. Add a new book (if it doesn't already exist)
-        if(!bookIds.includes(bookId)) {
-            bookIds.push(bookId);
-        }
-
-        // 4. Update user
-        await axios.put(`http://localhost:1337/api/users/${user.id}`, {
-            readingList: bookIds
-        }, 
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-        );
-
-        alert("Book saved");
-
-    } catch(error) {
-        console.log(error);
-        alert("Error saving book");
-    }
-};
-
 let readingListData = [];
 
 const getReadingList = async () => {
@@ -231,4 +176,62 @@ const sortByAuthor = () => {
     );
 
     renderReadingList(sorted);
+
+};
+
+loginBtn.addEventListener("click", login);
+registerBtn.addEventListener("click", register);
+logoutBtn.addEventListener("click", logout);
+
+checkLogin();
+
+const saveBook = async (bookId) => {
+    const token = localStorage.getItem("token");
+
+    if(!token) {
+        alert("Log in first");
+        return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    try {
+        // 1. Get current user (with readingList)
+        const userResponse = await axios.get(
+            `http://localhost:1337/api/users/${user.id}?populate=readingList`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const currentList = userResponse.data.readingList || [];
+
+        // 2. Get only the ID
+        const bookIds = currentList.map(book => book.id);
+
+        // 3. Add a new book (if it doesn't already exist)
+        if(!bookIds.includes(bookId)) {
+            bookIds.push(bookId);
+        }
+
+        // 4. Update user
+        await axios.put(`http://localhost:1337/api/users/${user.id}`, {
+            readingList: bookIds
+        }, 
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        );
+
+        alert("Book saved");
+
+        getReadingList();
+
+    } catch(error) {
+        console.log(error);
+        alert("Error saving book");
+    }
 };
