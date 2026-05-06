@@ -214,3 +214,12 @@ const removeBook = async (bookId) => {
 
     getReadingList();
 };
+
+// Sort title
+const sortByTitle = () => {
+    const sorted = [...readingListData].sort((a, b) =>
+        a.title.localeCompare(b.title)
+    );
+
+    renderReadingList(sorted);
+};
