@@ -170,3 +170,24 @@ const getReadingList = async () => {
 
     renderReadingList(readingListData);
 };
+// Render the list 
+const renderReadingList = (list) => {
+    const container = document.querySelector("#reading-list");
+
+    container.innerHTML = "";
+
+    list.forEach(book => {
+        const imageUrl = book.image?.length > 0
+            ? "http://localhost:1337" + book.image[0].url
+            : "";
+
+        container.innerHTML += `
+        <div class="book-card">
+            <h3>${book.title}</h3>
+            <p>${book.author}</p>
+            <img src="${imageUrl}" width="80">
+            <button onclick="removeBook(${book.id})">Remove</button>
+        </div>
+        `;
+    });
+};
