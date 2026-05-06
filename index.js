@@ -58,7 +58,7 @@ const checkLogin = () => {
     if(token) {
         userInfo.innerHTML = `Logged in as: ${user.username}`;
         logoutBtn.style.display = "block";
-        profileSection.style.display = "block"; // show profileside when logged in
+        profileSection.style.display = "block"; // show profile side when logged in
 
         getReadingList();
     } else {
@@ -150,4 +150,23 @@ const saveBook = async (bookId) => {
         console.log(error);
         alert("Error saving book");
     }
+};
+
+let readingListData = [];
+
+const getReadingList = async () => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const response = await axios.get(`http://localhost:1337/api/users/${user.id}?populate=readingList.image`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    readingListData = response.data.readingList || [];
+
+    renderReadingList(readingListData);
 };
