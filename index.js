@@ -263,4 +263,39 @@ const saveBook = async (bookId) => {
         alert("Error saving book");
     }
 };
+// Rating books
+const rateBook = async (bookId, value) => {
+    const token = localStorage.getItem("token");
 
+    if(!token) {
+        alert("Log in first");
+        return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    try {
+        // Create rating
+        await axios.post("http://localhost:1337/api/ratings",
+            {
+                data: {
+                    rating: Number(value),
+                    user: user.id,
+                    book: bookId
+                }
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        alert("Rating saved");
+
+        getBooks();
+        
+    } catch(error) {
+        console.log(error);
+    }
+};
