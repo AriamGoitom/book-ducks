@@ -78,6 +78,20 @@ const getBooks = async () => {
     booksContainer.innerHTML = "";
 
     response.data.data.forEach(book => {
+
+        const ratings = book.rating || [];
+
+        let averageRating = "No ratings";
+
+        if(ratings.length > 0) {
+            
+            const total = ratings.reduce((sum, rating) => {
+                return sum + rating.rating;
+            }, 0);
+            // Calculates the average
+            averageRating = (total / ratings.length).toFixed(1);
+        }
+
         const imageUrl = book.image?.length > 0
         ? "http://localhost:1337" + book.image[0].url
         : "";
@@ -88,7 +102,7 @@ const getBooks = async () => {
             <p>Author: ${book.author}</p>
             <p>Pages: ${book.pages}</p>
             <p>Release: ${book.release_date}</p>
-            <p>Average rating: ${book.averageRating || "No ratings yet"}</p>
+            <p>Average rating: ${averageRating}</p>
 
             <select onchange="rateBook(${book.id}, this.value)">
                 <option value="">Rate</option>
