@@ -9,3 +9,12 @@ body.green {
 body.blue {
     background-color: #4f5bdb;
 }
+
+.nav-button {
+    padding: 10px 16px;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}

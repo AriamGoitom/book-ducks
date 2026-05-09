@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Ducks</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="profile.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>My Profile</h1>
+        <a href="index.html" class="nav-button">Back to Books</a>
+        <button id="logoutBtn">Logout</button>
+    </header>
+
+    <section id="profile-section">
+        <h2>My Reading List</h2>
+
+        <button onclick="sortByTitle()">Sort by Title</button>
+        <button onclick="sortByAuthor()">Sort by Author</button>
+
+        <div id="reading-list"></div>
+    </section>
+</body>
+</html>
