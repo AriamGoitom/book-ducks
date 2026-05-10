@@ -20,7 +20,6 @@ const login = async () => {
         
         const token = response.data.jwt;
         localStorage.setItem("token", token);
-       /*  localStorage.setItem("user", JSON.stringify(response.data.user)); */
 
        // Get full user including isAdmin
        const me = await axios.get("http://localhost:1337/api/users/me?populate=*", {
@@ -262,7 +261,6 @@ const rateBook = async (bookId, value) => {
     }
 };
 
-//Create book via API
 const createBook = async () => {
     const token = localStorage.getItem("token");
 
@@ -271,24 +269,57 @@ const createBook = async () => {
     const pages = document.querySelector("#book-pages").value;
     const release_date = document.querySelector("#book-date").value;
 
+    const imageFile = document.querySelector("#book-image").files[0];
+
     try {
-        await axios.post("http://localhost:1337/api/books", {
-            data: {
-                title,
-                author,
-                pages,
-                release_date
+
+        // 1. Upload image
+        let uploadedImageId = null;
+
+        if(imageFile) {
+
+            const formData = new FormData();
+            formData.append("files", imageFile);
+
+            const uploadResponse = await axios.post(
+                "http://localhost:1337/api/upload",
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
+
+            uploadedImageId = uploadResponse.data[0].id;
+        }
+
+        // 2. Create book
+        await axios.post(
+            "http://localhost:1337/api/books",
+            {
+                data: {
+                    title,
+                    author,
+                    pages,
+                    release_date,
+                    image: uploadedImageId
+                }
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        );
 
         alert("Book created!");
+
         getBooks();
 
-    } catch (error) {
-        console.log(error.response?.data);
+    } catch(error) {
+        console.log(error.response?.data || error);
+        alert("Error creating book");
     }
 };
