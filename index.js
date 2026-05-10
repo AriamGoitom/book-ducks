@@ -17,8 +17,19 @@ const login = async () => {
             identifier: identifier.value,
             password: password.value
         });
-        localStorage.setItem("token", response.data.jwt);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        
+        const token = response.data.jwt;
+        localStorage.setItem("token", token);
+       /*  localStorage.setItem("user", JSON.stringify(response.data.user)); */
+
+       // Get full user including isAdmin
+       const me = await axios.get("http://localhost:1337/api/users/me?populate=*", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+       localStorage.setItem("user", JSON.stringify(me.data));
 
         checkLogin();
     }
@@ -35,8 +46,18 @@ const register = async () => {
             email: registerEmail.value,
             password: registerPassword.value
         });
-        localStorage.setItem("token", response.data.jwt);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        const token = response.data.jwt;
+
+        localStorage.setItem("token", token);
+
+        const me = await axios.get("http://localhost:1337/api/users/me", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        localStorage.setItem("user", JSON.stringify(me.data));
 
         checkLogin();
     }
@@ -55,21 +76,26 @@ const checkLogin = () => {
     let token = localStorage.getItem("token");
     let user = JSON.parse(localStorage.getItem("user"));
 
-    if(token) {
+    const adminPanel = document.querySelector("#admin-panel");
+
+    if(token && user) {
         userInfo.innerHTML = `Logged in as: ${user.username}`;
         logoutBtn.style.display = "block";
         profileLink.style.display = "inline-block";
 
-        //Admin check
-        if(user.isAdmin) {
-            document.querySelector("#admin-panel").style.display = "block";
+        // Admin check. Show only if admin
+        if(user.isAdmin === true) {
+            adminPanel.style.display = "block";
+        } else {
+            adminPanel.style.display = "none";
         }
 
     } else {
         userInfo.innerHTML = "Not logged in";
         logoutBtn.style.display = "none";
+        adminPanel.style.display = "none";
     }
-    
+
     getBooks();
     getTheme();
 };
@@ -233,5 +259,36 @@ const rateBook = async (bookId, value) => {
         
     } catch(error) {
        console.log(error.response.data);
+    }
+};
+
+//Create book via API
+const createBook = async () => {
+    const token = localStorage.getItem("token");
+
+    const title = document.querySelector("#book-title").value;
+    const author = document.querySelector("#book-author").value;
+    const pages = document.querySelector("#book-pages").value;
+    const release_date = document.querySelector("#book-date").value;
+
+    try {
+        await axios.post("http://localhost:1337/api/books", {
+            data: {
+                title,
+                author,
+                pages,
+                release_date
+            }
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        alert("Book created!");
+        getBooks();
+
+    } catch (error) {
+        console.log(error.response?.data);
     }
 };
