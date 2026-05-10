@@ -70,6 +70,29 @@ const renderReadingList = (list) => {
     });
 };
 
+const renderRatedBooks = (list) => {
+    const container = document.querySelector("#rated-books");
+
+    container.innerHTML = "";
+
+    list.forEach(item => {
+        const book = item.book;
+
+        const imageUrl = book.image?.length > 0
+        ? "http://localhost:1337" + book.image[0].url
+        : "";
+
+        container.innerHtml += `
+        <div class="book-card">
+            <h3>${book.title}</h3>
+            <p>${book.author}</p>
+            <p>Your rating: ${item.rating}</p>
+            <img src="${imageUrl}" width="80">
+        </div>
+        `;
+    });
+};
+
 const removeBook = async (bookId) => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
@@ -115,3 +138,4 @@ const sortByAuthor = () => {
 logoutBtn.addEventListener("click", logout);
 
 getReadingList(); // Calling
+getRatedBooks();
