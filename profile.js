@@ -35,13 +35,14 @@ const getRatedBooks = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const response = await axios.get(`http://localhost:1337/api/ratings?filters[user][id][$eq]=${user.id}&populate=book.image`,
+    const response = await axios.get(`http://localhost:1337/api/ratings?filters[users_permissions_user][id][$eq]=${user.id}&populate[book][populate]=image`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
     );
+    console.log(response.data);
 
     ratedBooksData = response.data.data;
 
@@ -77,12 +78,13 @@ const renderRatedBooks = (list) => {
 
     list.forEach(item => {
         const book = item.book;
-
+        console.log(book);
+        console.log(item);
         const imageUrl = book.image?.length > 0
         ? "http://localhost:1337" + book.image[0].url
         : "";
 
-        container.innerHtml += `
+        container.innerHTML += `
         <div class="book-card">
             <h3>${book.title}</h3>
             <p>${book.author}</p>
@@ -135,7 +137,33 @@ const sortByAuthor = () => {
 
 };
 
+// Sort rated books
+const sortRatedByTitle = () => {
+    const sorted = [...ratedBooksData].sort((a, b) =>
+        a.book.title.localeCompare(b.book.title)
+    );
+
+    renderRatedBooks(sorted);
+};
+
+const sortRatedByAuthor = () => {
+    const sorted = [...ratedBooksData].sort((a, b) =>
+        a.book.author.localeCompare(b.book.author)
+    );
+
+    renderRatedBooks(sorted);
+};
+
+const sortRatedByRating = () => {
+    const sorted = [...ratedBooksData].sort((a, b) =>
+        b.rating - a.rating //sortering betyg högst → lägst
+    );
+
+    renderRatedBooks(sorted);
+};
+
 logoutBtn.addEventListener("click", logout);
 
-getReadingList(); // Calling
+// Calling
+getReadingList();
 getRatedBooks();

@@ -121,6 +121,8 @@ const getBooks = async () => {
         </div>
         `;
         console.log(book);
+        console.log("BOOK:", book);
+        console.log("RATINGS:", book.ratings);
     });
     
 };
@@ -185,7 +187,7 @@ const saveBook = async (bookId) => {
 
         alert("Book saved");
 
-        getReadingList();
+        location.reload();
 
     } catch(error) {
         console.log(error);
@@ -209,7 +211,7 @@ const rateBook = async (bookId, value) => {
             {
                 data: {
                     rating: Number(value),
-                    user: user.id,
+                    users_permissions_user: user.id,
                     book: bookId
                 }
             },
@@ -225,6 +227,6 @@ const rateBook = async (bookId, value) => {
         getBooks();
         
     } catch(error) {
-        console.log(error);
+       console.log(error.response.data);
     }
 };
