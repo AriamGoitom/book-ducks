@@ -10,6 +10,7 @@ const userInfo = document.querySelector("#user-info");
 const booksContainer = document.querySelector("#books-container");
 const body = document.querySelector("body");
 const profileLink = document.querySelector("#profile-link");
+const authSection = document.querySelector("#auth-section");
 
 const login = async () => {
     try {
@@ -81,6 +82,7 @@ const checkLogin = () => {
         userInfo.innerHTML = `Logged in as: ${user.username}`;
         logoutBtn.style.display = "block";
         profileLink.style.display = "inline-block";
+        authSection.style.display = "none";
 
         // Admin check. Show only if admin
         if(user.isAdmin === true) {
@@ -93,6 +95,7 @@ const checkLogin = () => {
         userInfo.innerHTML = "Not logged in";
         logoutBtn.style.display = "none";
         adminPanel.style.display = "none";
+        authSection.style.display = "flex";
     }
 
     getBooks();
