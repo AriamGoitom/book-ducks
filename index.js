@@ -60,6 +60,11 @@ const checkLogin = () => {
         logoutBtn.style.display = "block";
         profileLink.style.display = "inline-block";
 
+        //Admin check
+        if(user.isAdmin) {
+            document.querySelector("#admin-panel").style.display = "block";
+        }
+
     } else {
         userInfo.innerHTML = "Not logged in";
         logoutBtn.style.display = "none";
