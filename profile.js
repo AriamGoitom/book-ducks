@@ -6,6 +6,7 @@ const logout = () => {
 };
 
 let readingListData = [];
+let ratedBooksData = [];
 
 const getReadingList = async () => {
     const token = localStorage.getItem("token");
@@ -28,6 +29,23 @@ const getReadingList = async () => {
     readingListData = response.data.readingList || [];
 
     renderReadingList(readingListData);
+};
+
+const getRatedBooks = async () => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const response = await axios.get(`http://localhost:1337/api/ratings?filters[user][id][$eq]=${user.id}&populate=book.image`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    ratedBooksData = response.data.data;
+
+    renderRatedBooks(ratedBooksData);
 };
 
 // Render the list 
