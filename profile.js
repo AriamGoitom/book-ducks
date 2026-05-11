@@ -1,5 +1,17 @@
 const logoutBtn = document.querySelector("#logoutBtn");
 
+// Theme for profile
+
+const applyTheme = () => {
+    const savedTheme = localStorage.getItem("theme") || "purple";
+
+    document.body.classList.remove("purple", "green", "blue");
+
+    document.body.classList.add(savedTheme);
+};
+
+applyTheme();
+
 const logout = () => {
     localStorage.clear();
     location.reload();
@@ -99,7 +111,7 @@ const removeBook = async (bookId) => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    //remove from array
+    // Remove from array
     const updatedList = readingListData
         .filter(book => book.id !== bookId)
         .map(book => book.id);
@@ -118,7 +130,7 @@ const removeBook = async (bookId) => {
     getReadingList();
 };
 
-// Sort title
+// Sort title in my reading list
 const sortByTitle = () => {
     const sorted = [...readingListData].sort((a, b) =>
         a.title.localeCompare(b.title)
@@ -127,17 +139,17 @@ const sortByTitle = () => {
     renderReadingList(sorted);
 };
 
-// Sort author
+// Sort author in my reading list
 const sortByAuthor = () => {
     const sorted = [...readingListData].sort((a, b) =>
         a.author.localeCompare(b.author)
     );
 
     renderReadingList(sorted);
-
 };
 
 // Sort rated books
+// Sort title in my rated books
 const sortRatedByTitle = () => {
     const sorted = [...ratedBooksData].sort((a, b) =>
         a.book.title.localeCompare(b.book.title)
@@ -146,6 +158,7 @@ const sortRatedByTitle = () => {
     renderRatedBooks(sorted);
 };
 
+// Sort author in my rated books
 const sortRatedByAuthor = () => {
     const sorted = [...ratedBooksData].sort((a, b) =>
         a.book.author.localeCompare(b.book.author)
@@ -153,7 +166,7 @@ const sortRatedByAuthor = () => {
 
     renderRatedBooks(sorted);
 };
-
+// Sort rating in my rated books
 const sortRatedByRating = () => {
     const sorted = [...ratedBooksData].sort((a, b) =>
         b.rating - a.rating //sortering betyg högst → lägst

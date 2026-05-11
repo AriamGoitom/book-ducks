@@ -12,6 +12,15 @@ const body = document.querySelector("body");
 const profileLink = document.querySelector("#profile-link");
 const authSection = document.querySelector("#auth-section");
 
+// Theme
+const setTheme = (theme) => {
+    document.body.classList.remove("purple", "green", "blue");
+
+    document.body.classList.add(theme);
+
+    localStorage.setItem("theme", theme);
+};
+
 const login = async () => {
     try {
         let response = await axios.post("http://localhost:1337/api/auth/local", {
@@ -161,11 +170,18 @@ const getBooks = async () => {
 };
 
 const getTheme = async () => {
-    
+
     try {
         const response = await axios.get("http://localhost:1337/api/theme");
+
         const theme = response.data.data.themeName;
-        body.className = theme;
+
+        document.body.classList.remove("purple", "green", "blue");
+
+        document.body.classList.add(theme);
+
+        localStorage.setItem("theme", theme);
+
     } catch(error) {
         console.log(error);
     }
