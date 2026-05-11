@@ -180,3 +180,16 @@ logoutBtn.addEventListener("click", logout);
 // Calling
 getReadingList();
 getRatedBooks();
+
+// Footer
+const updateFooter = () => {
+    const footer = document.querySelector("#footer");
+
+    if (!footer) return;
+
+    const year = new Date().getFullYear();
+
+    footer.textContent = `© ${year} Ariam Goitom. All rights reserved.`;
+};
+
+updateFooter();
