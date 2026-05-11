@@ -310,7 +310,7 @@ const createBook = async () => {
                     }
                 }
             );
-
+            // Gets the id on the image that is upploaded
             uploadedImageId = uploadResponse.data[0].id;
         }
 
